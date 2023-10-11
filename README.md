@@ -1,8 +1,15 @@
-## ejecutar comando para comoilar archivo typscript ##
-### npx tsc ###
+# Guia inicial 
+### Ejecutar este comando par instalar los paquetes necesarios
 
-## consulta controllers ejemplo ##
-###  
+``` npm install ```
+
+
+
+### ejecutar comando para comoilar archivo typscript 
+``` npx tsc ```
+
+### consulta controllers ejemplo
+```typescript
 import { Request, Response } from 'express';
 import { pool } from '../database';
 import { QueryResult } from 'pg';
@@ -54,4 +61,4 @@ export const deleteUser = async (req: Request, res: Response) => {
     ]);
     res.json(`User ${id} deleted Successfully`);
 };
-###
+```
