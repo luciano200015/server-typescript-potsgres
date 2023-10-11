@@ -6,4 +6,4 @@ export const pool=new Pool({
     password:'1010',
     database:'restaurante',
     port:5432
-})
+});
