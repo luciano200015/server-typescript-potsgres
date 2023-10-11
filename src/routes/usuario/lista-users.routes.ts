@@ -1,5 +1,5 @@
 import express from 'express';
-import UserController from '../controllers/user/user.js';
+import UserController from '../../controllers/user/lista-users';
 
 const obtenerUsuariosRoute = express.Router();
 
@@ -11,7 +11,7 @@ obtenerUsuariosRoute.get('/obtenerusuarios', async (req, res) => {
       message: "Usuarios obtenidos con éxito",
       results: results.rows,
     });
-    
+
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los usuarios" });
   }
