@@ -1,12 +1,20 @@
 # Guia inicial 
 ### Ejecutar este comando par instalar los paquetes necesarios
 
-``` npm install ```
+```sh 
+npm install 
+```
 
 
 
 ### ejecutar comando para comoilar archivo typscript 
-``` npx tsc ```
+```sh
+ npx tsc 
+```
+### comando para ejecutar servidor 
+```sh
+ npm run dev 
+```
 
 ### consulta controllers ejemplo
 ```typescript
