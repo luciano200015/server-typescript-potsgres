@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import RegisterControllersUser from '../../controllers/user/register-user';
 import Usuario from '../../models/User';
+import jwt from 'jsonwebtoken';
 
 //const __dirname = path.resolve();
 
@@ -32,8 +33,8 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
   try {
     const newUsuario = new Usuario(Nombre, Apellido,Correo, Telefono ,parseInt(Estado), esadmin, esanfitrion, uploadedFile);
     const result = await RegisterControllersUser.registerUser(newUsuario);
-
-    res.status(201).json({ result: result, message: 'Usuario creado exitosamente' });
+    const token = jwt.sign({ Correo: newUsuario.Correo }, 'LucianoSoruco', { expiresIn: '3h' });
+    res.status(201).json({ result: result, message: 'Usuario creado exitosamente',token:token });
   } catch (error) {
 
     res.status(500).json({ error: error });

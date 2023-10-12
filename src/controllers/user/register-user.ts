@@ -1,6 +1,7 @@
 import { QueryResult } from 'pg';
 import { pool } from '../../db/database';
 import Usuario from '../../models/User';
+import jwt from 'jsonwebtoken'
 
 
 class RegisterControllersUser {

@@ -1,7 +1,9 @@
 import express from 'express';
 import UserController from '../../controllers/user/lista-users';
+import validarToken from '../validarToken';
 
 const obtenerUsuariosRoute = express.Router();
+obtenerUsuariosRoute.use(validarToken);
 
 obtenerUsuariosRoute.get('/obtenerusuarios', async (req, res) => {
   try {

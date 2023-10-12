@@ -6,8 +6,9 @@ app.use(express.json())
 
 app.use(express.static('public'))
 
-app.use(obtenerUsuariosRoute);
 app.use(registerUserRoute);
+app.use(obtenerUsuariosRoute);
+
 
 app.listen(3000,()=>{
     console.log('server running port 3000');
