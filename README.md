@@ -1,4 +1,6 @@
-# Guia inicial 
+# Guia inicial
+Una vez descargado el repositorio abrir terminal y ejecutar siguientes
+los comandos paso a paso
 ### Ejecutar este comando par instalar los paquetes necesarios
 
 ```sh 
@@ -6,17 +8,16 @@ npm install
 ```
 
 
+### comando para ejecutar servidor
 
-### ejecutar comando para comoilar archivo typscript 
-```sh
- npx tsc 
-```
-### comando para ejecutar servidor 
+Nota: El la primera vez te saldra un error por la creacion de la carpetas public,
+Luego de eso para el servidor y vuelve a ejecutar el comando.
+
 ```sh
  npm run dev 
 ```
 
-### consulta controllers ejemplo
+### consulta controllers ejemplo CRUD
 ```typescript
 import { Request, Response } from 'express';
 import { pool } from '../database';
