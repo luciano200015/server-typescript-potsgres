@@ -35,9 +35,13 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
   const esanfitrion = EsAnfitrion === 'true' ? true : false;
 
   try {
+    
+
+    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono,Contrasena, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
+    const result = await RegisterControllersUser.registerUser(newUsuario);
+    const token = jwt.sign({Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
     // Genera un código OTP
     const otpCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
-
     //Envía el código OTP al número de teléfono del usuario utilizando Twilio
     const messageCode = `${otpCode}`;
     twilioClient.messages
@@ -48,13 +52,9 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
     })
     .then(message => console.log(message.sid));
 
-    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono,Contrasena, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
-    const result = await RegisterControllersUser.registerUser(newUsuario);
-    const token = jwt.sign({Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
-
-    res.status(201).json({ result: result, message: 'Usuario creado exitosamente',token:token });
+    res.status(201).json({ result: result, message: 'Usuario creado exitosamente',token:token,auth:true });
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({result:null, message: error ,token:null,auth:false });
   }
 });
 
