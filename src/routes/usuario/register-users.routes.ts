@@ -30,7 +30,7 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
   }
 
   const uploadedFile = req.file.filename;
-  const { Nombre, Apellido, Correo, Telefono, Estado, EsAdmin, EsAnfitrion } = req.body;
+  const { Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion } = req.body;
   
   const esadmin = EsAdmin === 'true' ? true : false;
   const esanfitrion = EsAnfitrion === 'true' ? true : false;
@@ -50,7 +50,7 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
     })
     .then(message => console.log(message.sid));*/
 
-    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
+    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono,Contraseña, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
     const result = await RegisterControllersUser.registerUser(newUsuario);
     const token = jwt.sign({Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
 

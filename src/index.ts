@@ -7,9 +7,6 @@ app.use(express.json())
 app.use(express.static('public'))
 
 app.use(registerUserRoute);
-app.use(obtenerUsuariosRoute);
-
-
 
 //rutas con uso de token
 app.use(obtenerUsuariosRoute);

@@ -7,7 +7,7 @@ import Usuario from '../../models/User';
 class RegisterControllersUser {
     static async registerUser(usuario: Usuario): Promise<QueryResult> {
         try {
-            const response: QueryResult = await pool.query('INSERT INTO Usuario (Nombre, Apellido, Correo, Telefono, Estado, EsAdmin, EsAnfitrion, Foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *' , [usuario.Nombre, usuario.Apellido, usuario.Correo, usuario.Telefono, usuario.Estado, usuario.EsAdmin, usuario.EsAnfitrion, usuario.Foto]);
+            const response: QueryResult = await pool.query('INSERT INTO Usuario (Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion, Foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *' , [usuario.Nombre, usuario.Apellido, usuario.Correo, usuario.Telefono,usuario.Contraseña, usuario.Estado, usuario.EsAdmin, usuario.EsAnfitrion, usuario.Foto]);
             return response.rows[0];
         } catch (error) {
             throw error;
