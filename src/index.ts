@@ -1,5 +1,7 @@
 import express from 'express';
-import { obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,crateTipoPlatoRoute,obteneTipoPlatoRoute ,updateTipoPlatoRoute,deleteTipoPlatoRoute} from './routes';
+import { obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,crateTipoPlatoRoute,obteneTipoPlatoRoute 
+    ,updateTipoPlatoRoute,deleteTipoPlatoRoute,
+    createPlatoRoute,updatePlatoRoute,obtenePlatoRoute,deletePlatoRoute} from './routes';
 
 
 const app=express();
@@ -13,6 +15,12 @@ app.use(loginUsuarioRoute);
 
 
 //------rutas con uso de token---------------
+
+//plato
+app.use(createPlatoRoute);
+app.use(updatePlatoRoute);
+app.use(obtenePlatoRoute);
+app.use(deletePlatoRoute);
 
 //tipo plato
 app.use(crateTipoPlatoRoute);
