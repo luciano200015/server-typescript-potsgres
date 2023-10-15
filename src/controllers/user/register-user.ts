@@ -3,6 +3,7 @@ import { pool } from '../../db/database';
 import Usuario from '../../models/User';
 
 
+
 class RegisterControllersUser {
     static async registerUser(usuario: Usuario): Promise<QueryResult> {
         try {

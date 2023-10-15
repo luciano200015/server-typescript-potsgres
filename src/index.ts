@@ -7,6 +7,7 @@ app.use(express.json())
 app.use(express.static('public'))
 
 app.use(registerUserRoute);
+app.use(obtenerUsuariosRoute);
 
 
 
