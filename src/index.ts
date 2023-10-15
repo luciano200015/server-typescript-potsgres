@@ -6,10 +6,14 @@ app.use(express.json())
 
 app.use(express.static('public'))
 
-app.use(obtenerUsuariosRoute);
 app.use(registerUserRoute);
 
 
-app.listen(3000,()=>{
-    console.log('server running port 3000');
+
+//rutas con uso de token
+app.use(obtenerUsuariosRoute);
+
+
+app.listen(9000,()=>{
+    console.log('server running port 9000');
 })
