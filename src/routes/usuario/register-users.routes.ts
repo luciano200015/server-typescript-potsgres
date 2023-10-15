@@ -43,14 +43,14 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
     // Genera un código OTP
     const otpCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
     //Envía el código OTP al número de teléfono del usuario utilizando Twilio
-    const messageCode = `${otpCode}`;
+    /*const messageCode = `${otpCode}`;
     twilioClient.messages
     .create({
         body: messageCode,
         from:'whatsapp:+14155238886',
         to: `whatsapp:${Telefono}`
     })
-    .then(message => console.log(message.sid));
+    .then(message => console.log(message.sid));*/
 
     res.status(201).json({ result: result, message: 'Usuario creado exitosamente',token:token,auth:true });
   } catch (error) {
