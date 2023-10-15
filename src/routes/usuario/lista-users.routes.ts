@@ -10,7 +10,7 @@ obtenerUsuariosRoute.get('/obtenerusuarios', async (req, res) => {
     const results = await UserController.obteneUsers();
     res.status(200).json({
       message: "Usuarios obtenidos con éxito",
-      results: results,
+      results: results.rows,
     });
   } catch (error) {
     res.status(500).json({ error: error });

@@ -16,6 +16,3 @@ class RegisterControllersUser {
 }
 
 export default RegisterControllersUser;
-
-
-

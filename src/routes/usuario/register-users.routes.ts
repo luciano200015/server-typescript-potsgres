@@ -3,8 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import RegisterControllersUser from '../../controllers/user/register-user';
 import Usuario from '../../models/User';
-import otpGenerator from 'otp-generator';
-import twilio from 'twilio'; // Reemplaza 'twilio' con la biblioteca Twilio que estés utilizando
+//import otpGenerator from 'otp-generator';
+//import twilio from 'twilio'; // Reemplaza 'twilio' con la biblioteca Twilio que estés utilizando
 import jwt from "jsonwebtoken";
 
 
@@ -20,9 +20,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Configura Twilio
-const twilioAccountSid = 'ACe8ff564264e544d88b01c3efefe2906b'; // Reemplaza con tu SID de cuenta de Twilio
+/*const twilioAccountSid = 'ACe8ff564264e544d88b01c3efefe2906b'; // Reemplaza con tu SID de cuenta de Twilio
 const twilioAuthToken = '27a9f814b98ac11c09f5ef88dd934005'; // Reemplaza con tu Token de autenticación de Twilio
-const twilioClient = twilio(twilioAccountSid, twilioAuthToken);
+const twilioClient = twilio(twilioAccountSid, twilioAuthToken);*/
 
 registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res, next) => {
   if (!req.file) {
@@ -41,7 +41,7 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
     const result = await RegisterControllersUser.registerUser(newUsuario);
     const token = jwt.sign({Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
     // Genera un código OTP
-    const otpCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
+    //const otpCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
     //Envía el código OTP al número de teléfono del usuario utilizando Twilio
     /*const messageCode = `${otpCode}`;
     twilioClient.messages
