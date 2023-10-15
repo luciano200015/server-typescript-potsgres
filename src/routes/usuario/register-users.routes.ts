@@ -30,8 +30,7 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
   }
 
   const uploadedFile = req.file.filename;
-  const { Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion } = req.body;
-  
+  const { Nombre, Apellido, Correo, Telefono, Contrasena, Estado, EsAdmin, EsAnfitrion } = req.body;
   const esadmin = EsAdmin === 'true' ? true : false;
   const esanfitrion = EsAnfitrion === 'true' ? true : false;
 
@@ -39,18 +38,17 @@ registerUserRoute.post('/createuser', upload.single('fotouser'), async (req, res
     // Genera un código OTP
     const otpCode = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
 
-    // Envía el código OTP al número de teléfono del usuario utilizando Twilio
-    /*const messageCode = `${otpCode}`;
-    console.log(messageCode)
+    //Envía el código OTP al número de teléfono del usuario utilizando Twilio
+    const messageCode = `${otpCode}`;
     twilioClient.messages
     .create({
         body: messageCode,
         from:'whatsapp:+14155238886',
         to: `whatsapp:${Telefono}`
     })
-    .then(message => console.log(message.sid));*/
+    .then(message => console.log(message.sid));
 
-    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono,Contraseña, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
+    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono,Contrasena, parseInt(Estado), esadmin, esanfitrion, uploadedFile);
     const result = await RegisterControllersUser.registerUser(newUsuario);
     const token = jwt.sign({Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
 
