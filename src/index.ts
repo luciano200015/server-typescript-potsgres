@@ -31,6 +31,6 @@ app.use(deleteTipoPlatoRoute);
 //usuarios
 app.use(obtenerUsuariosRoute);
 
-app.listen(9000,()=>{
-    console.log('server running port 9000');
+app.listen(3000,()=>{
+    console.log('server running port 3000');
 })
