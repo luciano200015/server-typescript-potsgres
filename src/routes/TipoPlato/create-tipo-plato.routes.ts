@@ -7,13 +7,14 @@ const crateTipoPlatoRoute = express.Router();
 crateTipoPlatoRoute.use(validarToken);
 
 crateTipoPlatoRoute.post('/createtipoplato', async (req, res, next) => {
-  const { Nombre, Descripcion, IdUsuario} = req.body;
+  const { Nombre, Descripcion, IdUsuario } = req.body;
   try {
     const newTipoPlato = new TipoPlato(Nombre, Descripcion, IdUsuario);
     const result = await CreateControllersTipoPlato.createTipoPlato(newTipoPlato);
-    res.status(201).json({ result: result, message: 'Tipo de plato creado exitosamente' });
+    res.status(201).json({ results: result, message: 'Tipo de plato creado exitosamente' });
   } catch (error) {
-    res.status(500).json({result:null, message: error  });
+    console.log(error);
+    res.status(500).json({ results: null, message: 'Hubo un error al crear tipo de plato' });
   }
 });
 

@@ -1,11 +1,16 @@
 import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 import { obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,crateTipoPlatoRoute,obteneTipoPlatoRoute 
     ,updateTipoPlatoRoute,deleteTipoPlatoRoute,
     createPlatoRoute,updatePlatoRoute,obtenePlatoRoute,deletePlatoRoute} from './routes';
 
 
 const app=express();
+app.use(bodyParser.json({ limit: '30mb' }));
+app.use(cors());
 app.use(express.json())
+
 
 app.use(express.static('public'))
 

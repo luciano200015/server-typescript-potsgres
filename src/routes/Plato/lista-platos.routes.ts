@@ -13,7 +13,7 @@ obtenePlatoRoute.get('/obtenerplatos', async (req, res) => {
       results: results.rows,
     });
   } catch (error) {
-    res.status(500).json({ message: error,results:null });
+    res.status(500).json({ message: error, results: null });
   }
 });
 
