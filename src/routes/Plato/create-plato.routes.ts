@@ -7,6 +7,7 @@ import path from 'path';
 
 const createPlatoRoute = express.Router();
 createPlatoRoute.use(validarToken);
+const ruta = path.resolve();
 
 const storage = multer.diskStorage({
   destination: path.join(path.resolve(), 'public/imagenes-platos'),
@@ -26,9 +27,9 @@ createPlatoRoute.post('/createplato',upload.single('fotoplato'), async (req, res
   try {
     const newPlato = new Plato(Nombre, Descripcion,parseInt(IdUsuario) , parseInt(IdTipoPlato),parseInt(Estado), uploadedFile);
     const result = await CreatePlatoController.createPlato(newPlato);
-    res.status(201).json({ result: result, message: 'Plato creado exitosamente' });
+    res.status(201).json({ results: result, message: 'Plato creado exitosamente' });
   } catch (error) {
-    res.status(500).json({ result: null, message: error });
+    res.status(500).json({ results: null, message: error });
   }
 });
 
