@@ -10,7 +10,7 @@ class Usuario {
     EsAnfitrion: boolean;
     Foto: string;
 
-    constructor( Nombre: string,Apellido: string,Correo:string,Telefono:string,Contraseña:String, Estado:number,EsAdmin:boolean, EsAnfitrion:boolean,Foto:string,id: number=0,) {
+    constructor( Nombre: string,Apellido: string,Correo:string,Telefono:string,Contraseña:String, Estado:number,EsAdmin:boolean, EsAnfitrion:boolean,Foto:string='',id: number=0,) {
         this.ID = id;
         this.Nombre=Nombre;
         this.Apellido=Apellido;

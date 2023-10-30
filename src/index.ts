@@ -1,16 +1,17 @@
 import express from 'express';
-import {
-    //usuarios 
-    obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,
-    //tipo plato
-    crateTipoPlatoRoute,obteneTipoPlatoRoute,updateTipoPlatoRoute,deleteTipoPlatoRoute,
-    //plato
-    createPlatoRoute,updatePlatoRoute,obtenePlatoRoute,deletePlatoRoute
-} from './routes';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
+import { obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,crateTipoPlatoRoute,obteneTipoPlatoRoute 
+    ,updateTipoPlatoRoute,deleteTipoPlatoRoute,
+    createPlatoRoute,updatePlatoRoute,obtenePlatoRoute,deletePlatoRoute} from './routes';
 
 
 const app=express();
+app.use(bodyParser.json({ limit: '30mb' }));
+app.use(cors());
 app.use(express.json())
+
 
 app.use(express.static('public'))
 
@@ -34,6 +35,6 @@ app.use(deleteTipoPlatoRoute);
 //usuarios
 app.use(obtenerUsuariosRoute);
 
-app.listen(9000,()=>{
-    console.log('server running port 9000');
+app.listen(3000,()=>{
+    console.log('server running port 3000');
 })
