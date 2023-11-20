@@ -2,12 +2,16 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-import { obtenerUsuariosRoute,registerUserRoute,loginUsuarioRoute,crateTipoPlatoRoute,obteneTipoPlatoRoute 
-    ,updateTipoPlatoRoute,deleteTipoPlatoRoute,
-    createPlatoRoute,updatePlatoRoute,obtenePlatoRoute,deletePlatoRoute} from './routes';
+import {
+    obtenerUsuariosRoute, registerUserRoute, loginUsuarioRoute,
+    TipoPlatoRoute,
+    PlatoRoute,
+    ServiciotoRoute,
+    ProductoRoute
+} from './routes';
 
 
-const app=express();
+const app = express();
 app.use(bodyParser.json({ limit: '30mb' }));
 app.use(cors());
 app.use(express.json())
@@ -15,26 +19,29 @@ app.use(express.json())
 
 app.use(express.static('public'))
 
+
+///----rutas sin uso de token----------
 app.use(registerUserRoute);
 app.use(loginUsuarioRoute);
 
-//------rutas con uso de token---------------
 
 //plato
-app.use(createPlatoRoute);
-app.use(updatePlatoRoute);
-app.use(obtenePlatoRoute);
-app.use(deletePlatoRoute);
+
+app.use(PlatoRoute)
 
 //tipo plato
-app.use(crateTipoPlatoRoute);
-app.use(obteneTipoPlatoRoute);
-app.use(updateTipoPlatoRoute);
-app.use(deleteTipoPlatoRoute);
+app.use(TipoPlatoRoute);
+
+
+//servicios
+app.use(ServiciotoRoute);
+
+//producto
+app.use(ProductoRoute);
 
 //usuarios
 app.use(obtenerUsuariosRoute);
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
     console.log('server running port 3000');
 })
