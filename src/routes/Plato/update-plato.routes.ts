@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 updatePlatoRoute.put('/updateplato/:id', upload.single('fotoplato'), async (req, res, next) => {
-  const {Nombre, Descripcion, IdUsuario, IdTipoPlato, Estado } = req.body;
+  const { Nombre, Descripcion, IdUsuario, IdTipoPlato, Estado } = req.body;
   const tipoPlatoID = parseInt(req.params.id);
   if (!req.file) {
     return res.status(400).json({ message: 'No se subió ningún archivo', result: null });
   }
-  
+
   const uploadedFile = req.file.filename;
 
   try {
