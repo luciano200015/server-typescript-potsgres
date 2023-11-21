@@ -6,6 +6,7 @@ import {
     TipoPlatoRoute,
     PlatoRoute,
     ServiciotoRoute,
+    ServiciotoRouteSinToken,
     ProductoRoute
 } from './routes';
 
@@ -22,6 +23,8 @@ app.use(express.static('public'))
 ///----rutas sin uso de token----------
 app.use(registerUserRoute);
 app.use(loginUsuarioRoute);
+app.use(ServiciotoRouteSinToken);
+
 
 
 //------rutas con uso de token---------------

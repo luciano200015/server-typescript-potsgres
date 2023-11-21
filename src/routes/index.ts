@@ -14,6 +14,7 @@ import PlatoRoute from "./Plato/plato.routes";
 
 //servicio
 import ServiciotoRoute from "./Servicio/servicio.routes";
+import ServiciotoRouteSinToken from "./Servicio/servicioSinToken.routes";
 
 //producto
 import ProductoRoute from "./Producto/producto.routes";
@@ -22,5 +23,6 @@ export {registerUserRoute,loginUsuarioRoute,obtenerUsuariosRoute,
     TipoPlatoRoute
     ,PlatoRoute,
     ServiciotoRoute,
+    ServiciotoRouteSinToken,
     ProductoRoute
 };
