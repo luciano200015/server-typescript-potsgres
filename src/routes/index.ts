@@ -19,10 +19,14 @@ import ServiciotoRouteSinToken from "./Servicio/servicioSinToken.routes";
 //producto
 import ProductoRoute from "./Producto/producto.routes";
 
+//reserva
+import ReservaRoute from "./Reserva/reserva.routes";
+
 export {registerUserRoute,loginUsuarioRoute,obtenerUsuariosRoute,
     TipoPlatoRoute
     ,PlatoRoute,
     ServiciotoRoute,
     ServiciotoRouteSinToken,
-    ProductoRoute
+    ProductoRoute,
+    ReservaRoute
 };

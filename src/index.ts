@@ -7,7 +7,8 @@ import {
     PlatoRoute,
     ServiciotoRoute,
     ServiciotoRouteSinToken,
-    ProductoRoute
+    ProductoRoute,
+    ReservaRoute
 } from './routes';
 
 
@@ -45,6 +46,9 @@ app.use(ProductoRoute);
 
 //usuarios
 app.use(obtenerUsuariosRoute);
+
+//reserva
+app.use(ReservaRoute);
 
 app.listen(3000, () => {
     console.log('server running port 3000');

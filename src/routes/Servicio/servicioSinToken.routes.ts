@@ -53,7 +53,7 @@ ServiciotoRouteSinToken.put('/updateservicio/:id', async (req, res, next) => {
 
 ServiciotoRouteSinToken.get('/obtenerservicios', async (req, res) => {
   try {
-    const results = await ServicioController.obtenerListaServicios();
+    const results = await ServicioController.obtenerListaServiciosPorFechaSinToken();
     res.status(200).json({
       message: "Lista de servicios obtenido con éxito",
       results: results.rows,
