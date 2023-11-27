@@ -7,7 +7,9 @@ import {
     TipoPlatoRoute,
     PlatoRoute,
     ServiciotoRoute,
-    ProductoRoute
+    ServiciotoRouteSinToken,
+    ProductoRoute,
+    ReservaRoute
 } from './routes';
 
 
@@ -23,6 +25,8 @@ app.use(express.static('public'))
 ///----rutas sin uso de token----------
 app.use(registerUserRoute);
 app.use(loginUsuarioRoute);
+app.use(ServiciotoRouteSinToken);
+
 
 
 //plato
@@ -41,6 +45,9 @@ app.use(ProductoRoute);
 
 //usuarios
 app.use(obtenerUsuariosRoute);
+
+//reserva
+app.use(ReservaRoute);
 
 app.listen(3000, () => {
     console.log('server running port 3000');

@@ -7,10 +7,10 @@ import jwt from "jsonwebtoken";
 
 
 const registerUserRoute = express.Router();
-const ruta = path.resolve();
+const ruta = path.resolve()
 
 registerUserRoute.post('/createuser', async (req, res, next) => {
-  const { Nombre, Apellido, Correo, Telefono, Contrasena, Estado, EsAdmin, EsAnfitrion, Foto } = req.body;
+  const { Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion, Foto } = req.body;
   const esadmin = EsAdmin === 'true' ? true : false;
   const esanfitrion = EsAnfitrion === 'true' ? true : false;
 
@@ -27,7 +27,8 @@ registerUserRoute.post('/createuser', async (req, res, next) => {
       fs.writeFileSync(imagePath, imageBuffer);
     }
 
-    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono, Contrasena, parseInt(Estado), esadmin, esanfitrion, imageName);
+    const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono, Contraseña, parseInt(Estado), esadmin, esanfitrion, imageName);
+    console.log(newUsuario)
     const result = await RegisterControllersUser.registerUser(newUsuario);
 
     const token = jwt.sign({ Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });

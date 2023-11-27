@@ -9,9 +9,9 @@ const ReservaRoute = express.Router();
 ReservaRoute.use(validarToken);
 
 ReservaRoute.post('/createreserva', async (req, res, next) => {
-  const { FechaReserva, FechaServicio, Cupo, Observacion, Estado, Total, IdUsuario, IdServicio } = req.body;
+  const { FechaReserva, Cupo, Observacion, Estado, IdUsuario, IdServicio } = req.body;
   try {
-    const newReserva = new Reserva(FechaReserva, FechaServicio, parseInt(Cupo), Observacion, parseInt(Estado), parseFloat(Total), parseInt(IdUsuario), parseInt(IdServicio));
+    const newReserva = new Reserva(FechaReserva, parseInt(Cupo), Observacion, parseInt(Estado), parseInt(IdUsuario), parseInt(IdServicio));
     const result = await ReservaController.createReserva(newReserva);
     res.status(201).json({ results: result, message: 'reserva creada exitosamente' });
   } catch (error) {
@@ -21,14 +21,16 @@ ReservaRoute.post('/createreserva', async (req, res, next) => {
 });
 
 ReservaRoute.put('/updatereserva/:id', async (req, res, next) => {
-  const { FechaReserva, FechaServicio, Cupo, Observacion, Estado, Total, IdUsuario, IdServicio } = req.body;
+  const { FechaReserva, Cupo, Observacion, Estado, IdUsuario, IdServicio } = req.body;
   const reservaID = parseInt(req.params.id);
 
   try {
-    const newReserva = new Reserva(FechaReserva, FechaServicio, parseInt(Cupo), Observacion, parseInt(Estado), parseFloat(Total), parseInt(IdUsuario), parseInt(IdServicio), reservaID);
+    const newReserva = new Reserva(FechaReserva, parseInt(Cupo), Observacion, parseInt(Estado), parseInt(IdUsuario), parseInt(IdServicio),'',0,reservaID);
+    //console.log(newReserva)
     const result = await ReservaController.updateReserva(newReserva);
     res.status(201).json({ results: result, message: 'Reserva actualizado exitosamente' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ results: null, message: error });
   }
 });
