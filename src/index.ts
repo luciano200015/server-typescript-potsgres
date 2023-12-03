@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+
 import {
     obtenerUsuariosRoute, registerUserRoute, loginUsuarioRoute,
     TipoPlatoRoute,
@@ -27,8 +28,6 @@ app.use(loginUsuarioRoute);
 app.use(ServiciotoRouteSinToken);
 
 
-
-//------rutas con uso de token---------------
 
 //plato
 
