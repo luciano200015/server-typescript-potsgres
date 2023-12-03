@@ -20,6 +20,7 @@ loginUsuarioRoute.post('/loginuser', (req, res) => __awaiter(void 0, void 0, voi
     try {
         const { Correo, Contrasena } = req.body;
         const results = yield login_user_1.default.loginUser(Correo, Contrasena);
+        console.log(results);
         if (results.rows.length === 0) {
             res.status(200).json({
                 message: "Contraseña o correo incorecto",

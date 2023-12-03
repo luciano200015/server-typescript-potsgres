@@ -8,6 +8,7 @@ loginUsuarioRoute.post('/loginuser', async (req, res) => {
     try {
         const { Correo, Contrasena } = req.body;
         const results = await LoginControllersUser.loginUser(Correo, Contrasena);
+        console.log(results)
         if (results.rows.length === 0) {
             res.status(200).json({
                 message: "Contraseña o correo incorecto",

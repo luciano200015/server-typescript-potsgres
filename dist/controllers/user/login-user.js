@@ -15,7 +15,7 @@ class LoginControllersUser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 console.log(Contraseña, Correo);
-                const response = yield database_1.pool.query('SELECT * FROM Usuario WHERE Usuario.Correo = $1 AND Usuario.contrasena = $2', [Correo, Contraseña]);
+                const response = yield database_1.pool.query('SELECT * FROM Usuario WHERE Usuario.Correo = $1 AND Usuario.contraseña = $2', [Correo, Contraseña]);
                 return response;
             }
             catch (error) {
