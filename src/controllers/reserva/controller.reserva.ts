@@ -16,6 +16,7 @@ class ReservaController {
                 'INSERT INTO Reserva (FechaReserva, FechaServicio, Cupo, Observacion, Estado, Total, IdUsuario, IdServicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
                 [reserva.FechaReserva, FechaServicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio]
             );
+            
             await client.query('COMMIT');
             return response.rows[0];
         } catch (error) {
@@ -61,14 +62,13 @@ class ReservaController {
         }
     }
 
-
     static async obtenerListaReservas(): Promise<QueryResult> {
         try {
             const response: QueryResult = await pool.query(`SELECT r.*,
             u.Nombre AS NombreUsuario,
             u.Apellido AS ApellidoUsuario,
             s.Nombre AS NombreServicio
-            FROM Reserva r
+            FROM Reserva r 
             JOIN Usuario u ON r.IdUsuario = u.ID
             JOIN Servicio s ON r.IdServicio = s.ID
             ORDER BY r.ID ASC`);
@@ -77,9 +77,18 @@ class ReservaController {
             throw error;
         }
     }
+
     static async obtenerListaReservasUser(idUser: number): Promise<QueryResult> {
         try {
-            const response: QueryResult = await pool.query(`SELECT * FROM Reserva WHERE IdUsuario = $1`, [idUser]);
+            const response: QueryResult = await pool.query(`SELECT r.*,
+            u.Nombre AS NombreUsuario,
+            u.Apellido AS ApellidoUsuario,
+            s.Nombre AS NombreServicio
+            FROM Reserva r
+            JOIN Usuario u ON r.IdUsuario = u.ID
+            JOIN Servicio s ON r.IdServicio = s.ID
+            WHERE r.IdUsuario=$1
+            ORDER BY r.ID ASC`, [idUser]);
             return response;
         } catch (error) {
             throw error;
