@@ -10,14 +10,11 @@ class ReservaController {
             await client.query('BEGIN');
             const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1', [reserva.IdServicio]);
             const FechaServicio = servicio.rows[0].fechainicio;
-            const Total = parseFloat(servicio.rows[0].precio.replace(/\$/g, '')) * parseFloat(reserva.Cupo) ;
-            console.log(servicio.rows[0].precio);
-            console.log(FechaServicio);
-
+            const Total = servicio.rows[0].precio * reserva.Cupo;
 
             const response: QueryResult = await client.query(
                 'INSERT INTO Reserva (FechaReserva, FechaServicio, Cupo, Observacion, Estado, Total, IdUsuario, IdServicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-                [reserva.FechaReserva, FechaServicio, parseInt(reserva.Cupo) , reserva.Observacion, reserva.Estado, parseFloat(Total), reserva.IdUsuario, reserva.IdServicio]
+                [reserva.FechaReserva, FechaServicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio]
             );
             
             await client.query('COMMIT');
@@ -39,7 +36,7 @@ class ReservaController {
 
             const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1', [reserva.IdServicio]);
             const FechaServicio = servicio.rows[0].fechainicio;
-            const Total = parseFloat(servicio.rows[0].precio.replace(/\$/g, '')) * parseFloat(reserva.Cupo) ;
+            const Total = servicio.rows[0].precio * reserva.Cupo;
 
             const response: QueryResult = await client.query(
                 `UPDATE Reserva 
@@ -52,7 +49,7 @@ class ReservaController {
                 IdUsuario = $7, 
                 IdServicio = $8
                 WHERE ID = $9 RETURNING *`,
-                [reserva.FechaReserva, FechaServicio, parseInt(reserva.Cupo), reserva.Observacion, reserva.Estado,parseFloat(Total), reserva.IdUsuario, reserva.IdServicio, reserva.ID]
+                [reserva.FechaReserva, FechaServicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio, reserva.ID]
             );
 
             await client.query('COMMIT');
