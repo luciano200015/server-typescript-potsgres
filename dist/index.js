@@ -28,6 +28,7 @@ app.use(routes_1.ProductoRoute);
 app.use(routes_1.obtenerUsuariosRoute);
 //reserva
 app.use(routes_1.ReservaRoute);
-app.listen(3000, () => {
-    console.log('server running port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
