@@ -39,6 +39,7 @@ TipoPlatoRoute.put('/updatetipoplato/:id', (req, res, next) => __awaiter(void 0,
         res.status(201).json({ results: result, message: 'Tipo de plato actualizado exitosamente' });
     }
     catch (error) {
+        console.log(error);
         res.status(500).json({ results: null, message: error });
     }
 }));

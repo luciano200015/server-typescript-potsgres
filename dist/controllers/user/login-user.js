@@ -8,14 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("../../db/database");
+const login_user_1 = __importDefault(require("../../capa-datos/user/login-user"));
 class LoginControllersUser {
     static loginUser(Correo, Contraseña) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(Contraseña, Correo);
-                const response = yield database_1.pool.query('SELECT * FROM Usuario WHERE Usuario.Correo = $1 AND Usuario.contraseña = $2', [Correo, Contraseña]);
+                const response = yield login_user_1.default.loginUser(Correo, Contraseña);
                 return response;
             }
             catch (error) {

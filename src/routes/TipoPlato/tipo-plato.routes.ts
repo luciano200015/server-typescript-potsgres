@@ -27,6 +27,7 @@ TipoPlatoRoute.put('/updatetipoplato/:id', async (req, res, next) => {
       const result = await ControllersTipoPlato.updateTipoPlato(newTipoPlato);
       res.status(201).json({ results: result, message: 'Tipo de plato actualizado exitosamente' });
     } catch (error) {
+      console.log(error)
       res.status(500).json({results:null, message: error  });
     }
 });

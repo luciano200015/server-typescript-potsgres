@@ -8,14 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("../../db/database");
+const capa_datos_plato_1 = __importDefault(require("../../capa-datos/plato/capa-datos.plato"));
 class PlatoController {
     static createPlato(plato) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('INSERT INTO Plato (Nombre, Descripcion, IdUsuario, IdTipoPlato, Estado, Foto) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [plato.Nombre, plato.Descripcion, plato.IdUsuario, plato.IdTipoPlato, plato.Estado, plato.Foto]);
-                return response.rows[0];
+                const response = yield capa_datos_plato_1.default.createPlato(plato);
+                return response;
             }
             catch (error) {
                 throw error;
@@ -25,15 +28,8 @@ class PlatoController {
     static updatePlato(plato) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query(`UPDATE Plato 
-                SET Nombre = $1, 
-                Descripcion = $2, 
-                IdUsuario = $3, 
-                IdTipoPlato = $4, 
-                Estado = $5, 
-                Foto = $6 
-                WHERE ID = $7 RETURNING *`, [plato.Nombre, plato.Descripcion, plato.IdUsuario, plato.IdTipoPlato, plato.Estado, plato.Foto, plato.ID]);
-                return response.rows[0];
+                const response = yield capa_datos_plato_1.default.updatePlato(plato);
+                return response;
             }
             catch (error) {
                 throw error;
@@ -43,15 +39,7 @@ class PlatoController {
     static obtenerListaPlatos() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query(`
-          SELECT
-          p.*,
-          tp.Nombre AS TipoPlatoNombre,
-          u.Nombre AS NombreUsuario
-        FROM Plato p
-        JOIN TipoPlato tp ON p.IdTipoPlato = tp.ID
-        JOIN Usuario u ON p.IdUsuario = u.ID;
-          `);
+                const response = yield capa_datos_plato_1.default.obtenerListaPlatos();
                 return response;
             }
             catch (error) {
@@ -62,8 +50,8 @@ class PlatoController {
     static deletePlato(platoID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('DELETE FROM Plato WHERE ID = $1 RETURNING *', [platoID]);
-                return response.rows[0];
+                const response = yield capa_datos_plato_1.default.deletePlato(platoID);
+                return response;
             }
             catch (error) {
                 throw error;

@@ -8,16 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("../../db/database");
+const capadato_producto_1 = __importDefault(require("../../capa-datos/producto/capadato.producto"));
 class ProductoController {
     //crear nuevo Producto
     static createProducto(Producto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('INSERT INTO Producto (Nombre, Descripcion, Foto, Precio, Stock, Estado) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [Producto.Nombre, Producto.Descripcion, Producto.Foto, Producto.Precio, Producto.Stock, Producto.Estado]);
-                const result = response.rows[0];
-                return result;
+                const response = yield capadato_producto_1.default.createProducto(Producto);
+                return response;
             }
             catch (error) {
                 throw error;
@@ -28,15 +30,8 @@ class ProductoController {
     static updateProducto(Producto) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query(`UPDATE Producto 
-            SET Nombre = $1, 
-            Descripcion = $2, 
-            Foto = $3, 
-            Precio = $4, 
-            Stock = $5, 
-            Estado = $6
-            WHERE ID = $7 RETURNING *`, [Producto.Nombre, Producto.Descripcion, Producto.Foto, Producto.Precio, Producto.Stock, Producto.Estado, Producto.ID]);
-                return response.rows[0];
+                const response = yield capadato_producto_1.default.updateProducto(Producto);
+                return response;
             }
             catch (error) {
                 throw error;
@@ -47,7 +42,7 @@ class ProductoController {
     static obtenerListaProductos() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query(`SELECT * FROM Producto`);
+                const response = yield capadato_producto_1.default.obtenerListaProductos();
                 return response;
             }
             catch (error) {
@@ -59,8 +54,8 @@ class ProductoController {
     static deleteProducto(productoID) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('DELETE FROM Producto WHERE ID = $1 RETURNING *', [productoID]);
-                return response.rows[0];
+                const response = yield capadato_producto_1.default.deleteProducto(productoID);
+                return response;
             }
             catch (error) {
                 throw error;

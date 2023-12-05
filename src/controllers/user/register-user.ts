@@ -1,13 +1,14 @@
 import { QueryResult } from 'pg';
-import { pool } from '../../db/database';
+//import { pool } from '../../db/database';
 import Usuario from '../../models/User';
+import RegisterCapaDatosUser from '../../capa-datos/user/register-user';
 
 
 
 class RegisterControllersUser {
     static async registerUser(usuario: Usuario): Promise<QueryResult> {
         try {
-            const response: QueryResult = await pool.query('INSERT INTO Usuario (Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion, Foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *' , [usuario.Nombre, usuario.Apellido, usuario.Correo, usuario.Telefono,usuario.Contraseña, usuario.Estado, usuario.EsAdmin, usuario.EsAnfitrion, usuario.Foto]);
+            const response: QueryResult = await RegisterCapaDatosUser.registerUser(usuario);
             return response.rows[0];
         } catch (error) {
             throw error;

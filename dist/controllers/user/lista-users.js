@@ -8,13 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("../../db/database");
+//import { pool } from '../../db/database';
+const lista_users_1 = __importDefault(require("../../capa-datos/user/lista-users"));
 class ListasControllersUsers {
     static obteneUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('SELECT * FROM usuario ORDER BY ID ASC');
+                const response = yield lista_users_1.default.obteneUsers();
                 return response;
             }
             catch (error) {

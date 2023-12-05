@@ -1,11 +1,10 @@
 import { QueryResult } from 'pg';
-import { pool } from '../../db/database';
+import LoginCapaDatos from '../../capa-datos/user/login-user';
 
 class LoginControllersUser {
     static async loginUser(Correo: String,Contraseña:String): Promise<QueryResult> {
         try {
-            console.log(Contraseña,Correo)
-            const response: QueryResult = await pool.query('SELECT * FROM Usuario WHERE Usuario.Correo = $1 AND Usuario.contraseña = $2' , [Correo,Contraseña]);
+            const response: QueryResult = await LoginCapaDatos.loginUser(Correo,Contraseña);
             return response;
         } catch (error) {
             throw error;

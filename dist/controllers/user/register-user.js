@@ -8,13 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const database_1 = require("../../db/database");
+const register_user_1 = __importDefault(require("../../capa-datos/user/register-user"));
 class RegisterControllersUser {
     static registerUser(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.pool.query('INSERT INTO Usuario (Nombre, Apellido, Correo, Telefono, Contraseña, Estado, EsAdmin, EsAnfitrion, Foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', [usuario.Nombre, usuario.Apellido, usuario.Correo, usuario.Telefono, usuario.Contraseña, usuario.Estado, usuario.EsAdmin, usuario.EsAnfitrion, usuario.Foto]);
+                const response = yield register_user_1.default.registerUser(usuario);
                 return response.rows[0];
             }
             catch (error) {
