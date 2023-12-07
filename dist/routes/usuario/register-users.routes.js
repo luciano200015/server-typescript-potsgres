@@ -22,10 +22,11 @@ const registerUserRoute = express_1.default.Router();
 const ruta = path_1.default.resolve();
 registerUserRoute.post('/createuser', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { Nombre, Apellido, Correo, Telefono, Contraseña, EsAdmin, EsAnfitrion, Foto } = req.body;
+    console.log(req.body);
     try {
         // Convertir la cadena Base64 en datos binarios
         let imageName = 'null';
-        if (Foto.mimeType !== undefined || Foto.base64 !== undefined) {
+        if (Foto !== undefined && (Foto === null || Foto === void 0 ? void 0 : Foto.mimeType) !== undefined && (Foto === null || Foto === void 0 ? void 0 : Foto.base64) !== undefined) {
             const imageBuffer = Buffer.from(Foto.base64, 'base64');
             imageName = `${Date.now()}${Foto.mimeType}`; // Personaliza el nombre según tus necesidades
             // Ruta para guardar la imagen

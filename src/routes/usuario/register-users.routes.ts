@@ -12,10 +12,13 @@ const ruta = path.resolve()
 registerUserRoute.post('/createuser', async (req, res, next) => {
   const { Nombre, Apellido, Correo, Telefono, Contraseña, EsAdmin, EsAnfitrion, Foto } = req.body;
 
+  console.log(req.body);
+
+
   try {
     // Convertir la cadena Base64 en datos binarios
     let imageName ='null'
-    if (Foto.mimeType !== undefined || Foto.base64 !== undefined) {
+    if(Foto!==undefined && Foto?.mimeType !== undefined && Foto?.base64 !== undefined ) {
       const imageBuffer = Buffer.from(Foto.base64, 'base64');
       imageName = `${Date.now()}${Foto.mimeType}`; // Personaliza el nombre según tus necesidades
       // Ruta para guardar la imagen
@@ -26,9 +29,9 @@ registerUserRoute.post('/createuser', async (req, res, next) => {
     }
 
     const newUsuario = new Usuario(Nombre, Apellido, Correo, Telefono, Contraseña, 1, EsAdmin, EsAnfitrion, imageName);
-    console.log(newUsuario)
-    const result = await RegisterControllersUser.registerUser(newUsuario);
+    console.log(newUsuario);
 
+    const result = await RegisterControllersUser.registerUser(newUsuario);
     const token = jwt.sign({ Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
 
     res.status(201).json({ result: result, message: 'Usuario creado exitosamente', token: token, auth: true });
