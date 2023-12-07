@@ -14,15 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const validarToken_1 = __importDefault(require("../validarToken"));
-const controller_tipo_plato_1 = __importDefault(require("../../controllers/tipo-plato/controller.tipo-plato"));
 const controller_reserva_1 = __importDefault(require("../../controllers/reserva/controller.reserva"));
 const Reserva_1 = __importDefault(require("../../models/Reserva"));
 const ReservaRoute = express_1.default.Router();
 ReservaRoute.use(validarToken_1.default);
 ReservaRoute.post('/createreserva', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { FechaReserva, Cupo, Observacion, Estado, IdUsuario, IdServicio } = req.body;
+    const { FechaReserva, Cupo, Observacion, IdUsuario, IdServicio } = req.body;
     try {
-        const newReserva = new Reserva_1.default(FechaReserva, parseInt(Cupo), Observacion, parseInt(Estado), parseInt(IdUsuario), parseInt(IdServicio));
+        const newReserva = new Reserva_1.default(FechaReserva, parseInt(Cupo), Observacion, 2, parseInt(IdUsuario), parseInt(IdServicio));
         const result = yield controller_reserva_1.default.createReserva(newReserva);
         res.status(201).json({ results: result, message: 'reserva creada exitosamente' });
     }
@@ -73,11 +72,12 @@ ReservaRoute.get('/obtenerlistareservasuser/:id', (req, res) => __awaiter(void 0
 ReservaRoute.delete('/deletereserva/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const reservaID = parseInt(req.params.id);
     try {
-        const result = yield controller_tipo_plato_1.default.deleteTipoPlato(reservaID);
+        const result = yield controller_reserva_1.default.deleteReserva(reservaID);
+        console.log(result);
         res.status(200).json({ results: result, message: 'Reserva eliminada exitosamente' });
     }
     catch (error) {
-        //console.log(error);
+        console.log(error);
         res.status(500).json({ results: null, message: error });
     }
 }));

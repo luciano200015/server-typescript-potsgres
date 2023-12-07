@@ -8,15 +8,27 @@ class ReservaCapaDato {
 
         try {
             await client.query('BEGIN');
-            const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1', [reserva.IdServicio]);
-            const FechaServicio = servicio.rows[0].fechainicio;
+
+            // Obtener información del servicio
+            const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1 FOR UPDATE', [reserva.IdServicio]);
+
+            // Validar cupo disponible
+            const cupoDisponible = servicio.rows[0].cupo;
+            if (reserva.Cupo > cupoDisponible) {
+                throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+            }
+
+            // Calcular el Total
             const Total = servicio.rows[0].precio * reserva.Cupo;
 
+            // Insertar reserva
             const response: QueryResult = await client.query(
                 'INSERT INTO Reserva (FechaReserva, FechaServicio, Cupo, Observacion, Estado, Total, IdUsuario, IdServicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-                [reserva.FechaReserva, FechaServicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio]
+                [reserva.FechaReserva, servicio.rows[0].fechainicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio]
             );
-            
+            // Actualizar cupo en la tabla Servicio
+            //await client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
+
             await client.query('COMMIT');
             return response.rows[0];
         } catch (error) {
@@ -34,7 +46,15 @@ class ReservaCapaDato {
         try {
             await client.query('BEGIN');
 
-            const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1', [reserva.IdServicio]);
+            const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1 FOR UPDATE', [reserva.IdServicio]);
+            const reservaData: QueryResult = await client.query('SELECT * FROM Reserva WHERE ID = $1 FOR UPDATE', [reserva.ID]);
+
+            const cupoDisponible = servicio.rows[0].cupo;
+            
+            if (reserva.Cupo > cupoDisponible) {
+                throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+            }
+            
             const FechaServicio = servicio.rows[0].fechainicio;
             const Total = servicio.rows[0].precio * reserva.Cupo;
 
@@ -51,6 +71,12 @@ class ReservaCapaDato {
                 WHERE ID = $9 RETURNING *`,
                 [reserva.FechaReserva, FechaServicio, reserva.Cupo, reserva.Observacion, reserva.Estado, Total, reserva.IdUsuario, reserva.IdServicio, reserva.ID]
             );
+            if (reserva.Estado === 1 && reserva.Estado !== reservaData.rows[0].estado) {
+                await client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
+            }
+            if (reservaData.rows[0].estado===1&&(reserva.Estado===2 || reserva.Estado===0)) {
+                await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reservaData.rows[0].cupo, reserva.IdServicio]);
+            }
 
             await client.query('COMMIT');
             return response.rows[0];

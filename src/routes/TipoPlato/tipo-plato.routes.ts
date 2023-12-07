@@ -46,8 +46,11 @@ TipoPlatoRoute.get('/obtenertipoplato', async (req, res) => {
 
 TipoPlatoRoute.delete('/deletetipoplato/:id', async (req, res, next) => {
     const tipoPlatoID = parseInt(req.params.id);
+    
     try {
       const result = await ControllersTipoPlato.deleteTipoPlato(tipoPlatoID);
+      console.log(result);
+
       res.status(200).json({ results: result, message: 'Tipo de plato eliminado exitosamente' });
     } catch (error) {
       console.log(error);

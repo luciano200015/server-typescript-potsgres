@@ -59,6 +59,7 @@ TipoPlatoRoute.delete('/deletetipoplato/:id', (req, res, next) => __awaiter(void
     const tipoPlatoID = parseInt(req.params.id);
     try {
         const result = yield controller_tipo_plato_1.default.deleteTipoPlato(tipoPlatoID);
+        console.log(result);
         res.status(200).json({ results: result, message: 'Tipo de plato eliminado exitosamente' });
     }
     catch (error) {

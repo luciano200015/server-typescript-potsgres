@@ -1,7 +1,5 @@
 import express from 'express';
-import TipoPlato from '../../models/TipoPlato';
 import validarToken from '../validarToken';
-import ControllersTipoPlato from '../../controllers/tipo-plato/controller.tipo-plato';
 import ReservaController from '../../controllers/reserva/controller.reserva';
 import Reserva from '../../models/Reserva';
 
@@ -9,9 +7,9 @@ const ReservaRoute = express.Router();
 ReservaRoute.use(validarToken);
 
 ReservaRoute.post('/createreserva', async (req, res, next) => {
-  const { FechaReserva, Cupo, Observacion, Estado, IdUsuario, IdServicio } = req.body;
+  const { FechaReserva, Cupo, Observacion, IdUsuario, IdServicio } = req.body;
   try {
-    const newReserva = new Reserva(FechaReserva, parseInt(Cupo), Observacion, parseInt(Estado), parseInt(IdUsuario), parseInt(IdServicio));
+    const newReserva = new Reserva(FechaReserva, parseInt(Cupo), Observacion,2, parseInt(IdUsuario), parseInt(IdServicio));
     const result = await ReservaController.createReserva(newReserva);
     res.status(201).json({ results: result, message: 'reserva creada exitosamente' });
   } catch (error) {
@@ -63,10 +61,11 @@ ReservaRoute.get('/obtenerlistareservasuser/:id', async (req, res) => {
 ReservaRoute.delete('/deletereserva/:id', async (req, res, next) => {
   const reservaID = parseInt(req.params.id);
   try {
-    const result = await ControllersTipoPlato.deleteTipoPlato(reservaID);
+    const result = await ReservaController.deleteReserva(reservaID);
+    console.log(result);
     res.status(200).json({ results: result, message: 'Reserva eliminada exitosamente' });
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     res.status(500).json({ results: null, message: error });
   }
 });
