@@ -18,7 +18,7 @@ class RegisterControllersUser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield register_user_1.default.registerUser(usuario);
-                return response.rows[0];
+                return response;
             }
             catch (error) {
                 throw error;

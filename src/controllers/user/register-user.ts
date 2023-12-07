@@ -9,7 +9,7 @@ class RegisterControllersUser {
     static async registerUser(usuario: Usuario): Promise<QueryResult> {
         try {
             const response: QueryResult = await RegisterCapaDatosUser.registerUser(usuario);
-            return response.rows[0];
+            return response;
         } catch (error) {
             throw error;
         }
