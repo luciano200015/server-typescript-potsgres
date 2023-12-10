@@ -48,8 +48,20 @@ class ReservaCapaDato {
 
             const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1 FOR UPDATE', [reserva.IdServicio]);
             const reservaData: QueryResult = await client.query('SELECT * FROM Reserva WHERE ID = $1 FOR UPDATE', [reserva.ID]);
-
             const cupoDisponible = servicio.rows[0].cupo;
+
+            if (servicio.rows[0].id===reserva.ID && 
+                cupoDisponible===reserva.Cupo &&
+                servicio.rows[0].fechareserva===reserva.FechaReserva &&
+                servicio.rows[0].observacion===reserva.Observacion&&
+                servicio.rows[0].estado===reserva.Estado&&
+                servicio.rows[0].total===reserva.Total&&
+                servicio.rows[0].idusuario===reserva.IdUsuario&&
+                servicio.rows[0].idservicio===reserva.IdServicio
+                ) {
+                    console.log(`cumplio con todo y ser`)
+                return servicio.rows[0];
+            }
             
             if (reserva.Cupo > cupoDisponible) {
                 throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
