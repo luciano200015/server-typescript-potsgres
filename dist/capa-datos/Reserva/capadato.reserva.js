@@ -21,7 +21,7 @@ class ReservaCapaDato {
                 // Validar cupo disponible
                 const cupoDisponible = servicio.rows[0].cupo;
                 if (reserva.Cupo > cupoDisponible) {
-                    throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+                    throw new Error(`No hay suficientes cupos disponibles esta reserva solo contamos con ${cupoDisponible} cupos.`);
                 }
                 // Calcular el Total
                 const Total = servicio.rows[0].precio * reserva.Cupo;
@@ -60,25 +60,21 @@ class ReservaCapaDato {
                     reservaData.rows[0].idservicio === reserva.IdServicio) {
                     return reservaData.rows[0];
                 }
+                //sin esa cantidad de cupos disponibles
                 if (reserva.Cupo > cupoDisponible) {
-                    throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+                    throw new Error(`Solo quedan ${cupoDisponible} cupos disponibles.`);
                 }
-                if (reserva.Estado === 1 && reserva.Estado !== reservaData.rows[0].estado) {
+                //aprobada
+                if (reserva.Estado === 1) {
                     yield client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
                 }
-                if ((reserva.Estado === 1 && reserva.Estado === reservaData.rows[0].estado) || reserva.Cupo !== reservaData.rows[0].cupo) {
-                    let cupo = 0;
-                    if (reserva.Cupo > reservaData.rows[0].cupo) {
-                        cupo = reserva.Cupo - reservaData.rows[0].cupo;
-                        yield client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [cupo, reserva.IdServicio]);
-                    }
-                    else {
-                        cupo = reservaData.rows[0].cupo - reserva.Cupo;
-                        yield client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [cupo, reserva.IdServicio]);
-                    }
+                //pendiente
+                if (reservaData.rows[0].estado === 1 && reserva.Estado === 2) {
+                    yield client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
                 }
-                if (reservaData.rows[0].estado === 1 && (reserva.Estado === 2 || reserva.Estado === 0)) {
-                    yield client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reservaData.rows[0].cupo, reserva.IdServicio]);
+                //cancelada
+                if (reserva.Estado === 0 && reservaData.rows[0].estado === 1) {
+                    yield client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
                 }
                 const response = yield client.query(`UPDATE Reserva 
                 SET FechaReserva = $1, 

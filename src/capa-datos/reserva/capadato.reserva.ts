@@ -11,11 +11,10 @@ class ReservaCapaDato {
 
             // Obtener información del servicio
             const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1 FOR UPDATE', [reserva.IdServicio]);
-
             // Validar cupo disponible
             const cupoDisponible = servicio.rows[0].cupo;
             if (reserva.Cupo > cupoDisponible) {
-                throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+                throw new Error(`No hay suficientes cupos disponibles esta reserva solo contamos con ${cupoDisponible} cupos.`);
             }
 
             // Calcular el Total
@@ -40,10 +39,8 @@ class ReservaCapaDato {
 
     static async updateReserva(reserva: Reserva): Promise<QueryResult> {
         const client = await pool.connect();
-
         try {
             await client.query('BEGIN');
-
             const servicio: QueryResult = await client.query('SELECT * FROM Servicio WHERE ID = $1 FOR UPDATE', [reserva.IdServicio]);
             const reservaData: QueryResult = await client.query('SELECT * FROM Reserva WHERE ID = $1 FOR UPDATE', [reserva.ID]);
             const cupoDisponible = servicio.rows[0].cupo;
@@ -61,28 +58,22 @@ class ReservaCapaDato {
                 reservaData.rows[0].idservicio===reserva.IdServicio) {
                 return reservaData.rows[0];
             }
-            
+            //sin esa cantidad de cupos disponibles
             if (reserva.Cupo > cupoDisponible) {
-                throw new Error('No hay suficientes cupos disponibles para realizar la reserva.');
+                throw new Error(`Solo quedan ${cupoDisponible} cupos disponibles.`);
             }
-            if (reserva.Estado === 1 && reserva.Estado !== reservaData.rows[0].estado) {
+            //aprobada
+            if (reserva.Estado === 1) {
                 await client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
             }
-            if ((reserva.Estado === 1 && reserva.Estado === reservaData.rows[0].estado)||reserva.Cupo!==reservaData.rows[0].cupo) {
-                let cupo=0;
-                if(reserva.Cupo>reservaData.rows[0].cupo){
-                    cupo=reserva.Cupo-reservaData.rows[0].cupo;
-                    await client.query('UPDATE Servicio SET Cupo = Cupo - $1 WHERE ID = $2', [cupo, reserva.IdServicio]);
-
-                }
-                else{
-                    cupo=reservaData.rows[0].cupo-reserva.Cupo;
-                    await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [cupo, reserva.IdServicio]);
-
-                }
+            //pendiente
+            if (reservaData.rows[0].estado === 1  && reserva.Estado === 2) {
+                await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
             }
-            if (reservaData.rows[0].estado===1&&(reserva.Estado===2 || reserva.Estado===0)) {
-                await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reservaData.rows[0].cupo, reserva.IdServicio]);
+            
+            //cancelada
+            if (reserva.Estado === 0 && reservaData.rows[0].estado === 1 ) {
+                await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reserva.Cupo, reserva.IdServicio]);
             }
         
             const response: QueryResult = await client.query(
@@ -108,6 +99,35 @@ class ReservaCapaDato {
         }
     }
 
+    static async cancelarReserva(Idreserva: number): Promise<QueryResult> {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            const reservaData: QueryResult = await client.query('SELECT * FROM Reserva WHERE ID = $1 FOR UPDATE', [Idreserva]);
+
+           
+            //cancelar
+            if (reservaData.rows[0].estado === 1 ) {
+                await client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reservaData.rows[0].cupo, reservaData.rows[0].idservicio]);
+            }
+        
+            const response: QueryResult = await client.query(
+                `UPDATE Reserva 
+                SET  
+                Estado = 0
+                WHERE ID = $1 RETURNING *`,
+                [ Idreserva]
+            );
+            await client.query('COMMIT');
+            return response.rows[0];
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    }
+    
     static async obtenerListaReservas(): Promise<QueryResult> {
         try {
             const response: QueryResult = await pool.query(`SELECT r.*,

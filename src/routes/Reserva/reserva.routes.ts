@@ -32,6 +32,17 @@ ReservaRoute.put('/updatereserva/:id', async (req, res, next) => {
     res.status(500).json({ results: null, message: error });
   }
 });
+ReservaRoute.put('/cancelarreserva/:id', async (req, res, next) => {
+  const reservaID = parseInt(req.params.id);
+
+  try {
+    const result = await ReservaController.cancelarReserva(reservaID);
+    res.status(201).json({ results: result, message: 'Reserva cancelada exitosamente' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ results: null, message: error });
+  }
+});
 
 ReservaRoute.get('/obtenerlistareservas', async (req, res) => {
   try {

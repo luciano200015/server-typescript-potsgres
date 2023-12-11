@@ -21,7 +21,14 @@ class ReservaController {
             throw error;
         }
     }
-
+    static async cancelarReserva(id: number): Promise<QueryResult> {
+        try {
+            const response: QueryResult = await ReservaCapaDato.cancelarReserva(id);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
     static async obtenerListaReservas(): Promise<QueryResult> {
         try {
             const response: QueryResult = await ReservaCapaDato.obtenerListaReservas();
