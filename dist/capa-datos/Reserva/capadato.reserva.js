@@ -98,6 +98,32 @@ class ReservaCapaDato {
             }
         });
     }
+    static cancelarReserva(Idreserva) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield database_1.pool.connect();
+            try {
+                yield client.query('BEGIN');
+                const reservaData = yield client.query('SELECT * FROM Reserva WHERE ID = $1 FOR UPDATE', [Idreserva]);
+                //cancelar
+                if (reservaData.rows[0].estado === 1) {
+                    yield client.query('UPDATE Servicio SET Cupo = Cupo + $1 WHERE ID = $2', [reservaData.rows[0].cupo, reservaData.rows[0].idservicio]);
+                }
+                const response = yield client.query(`UPDATE Reserva 
+                SET  
+                Estado = 0
+                WHERE ID = $1 RETURNING *`, [Idreserva]);
+                yield client.query('COMMIT');
+                return response.rows[0];
+            }
+            catch (error) {
+                yield client.query('ROLLBACK');
+                throw error;
+            }
+            finally {
+                client.release();
+            }
+        });
+    }
     static obtenerListaReservas() {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -46,4 +46,30 @@ registerUserRoute.post('/createuser', (req, res, next) => __awaiter(void 0, void
         res.status(500).json({ result: null, message: error, token: null, auth: false });
     }
 }));
+registerUserRoute.put('/updateuser/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { Nombre, Apellido, Correo, Telefono, Contraseña, EsAdmin, EsAnfitrion, Foto } = req.body;
+    const userID = parseInt(req.params.id);
+    try {
+        // Convertir la cadena Base64 en datos binarios
+        let imageName = Foto;
+        if (Foto !== undefined && (Foto === null || Foto === void 0 ? void 0 : Foto.mimeType) !== undefined && (Foto === null || Foto === void 0 ? void 0 : Foto.base64) !== undefined) {
+            const imageBuffer = Buffer.from(Foto.base64, 'base64');
+            imageName = `${Date.now()}${Foto.mimeType}`; // Personaliza el nombre según tus necesidades
+            // Ruta para guardar la imagen
+            const imagePath = path_1.default.join(ruta, 'public/imagenes-usuarios', imageName);
+            console.log('imagePath: ' + imagePath);
+            // Guardar la imagen en la carpeta
+            fs_1.default.writeFileSync(imagePath, imageBuffer);
+        }
+        const newUsuario = new User_1.default(Nombre, Apellido, Correo, Telefono, Contraseña, 1, EsAdmin, EsAnfitrion, imageName, userID);
+        console.log(newUsuario);
+        const result = yield register_user_1.default.registerUser(newUsuario);
+        const token = jsonwebtoken_1.default.sign({ Correo: Correo }, 'LucianoSoruco', { expiresIn: '14h' });
+        res.status(201).json({ result: result, message: 'Usuario creado exitosamente', token: token, auth: true });
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ result: null, message: error, token: null, auth: false });
+    }
+}));
 exports.default = registerUserRoute;

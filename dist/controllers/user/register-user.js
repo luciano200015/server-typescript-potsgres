@@ -25,5 +25,16 @@ class RegisterControllersUser {
             }
         });
     }
+    static updateUser(usuario) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield register_user_1.default.updateUser(usuario);
+                return response;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
 }
 exports.default = RegisterControllersUser;

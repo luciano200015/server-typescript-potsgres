@@ -36,6 +36,17 @@ class ReservaController {
             }
         });
     }
+    static cancelarReserva(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield capadato_reserva_1.default.cancelarReserva(id);
+                return response;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     static obtenerListaReservas() {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -14,6 +14,14 @@ class RegisterControllersUser {
             throw error;
         }
     }
+    static async updateUser(usuario: Usuario): Promise<QueryResult> {
+        try {
+            const response: QueryResult = await RegisterCapaDatosUser.updateUser(usuario);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default RegisterControllersUser;
