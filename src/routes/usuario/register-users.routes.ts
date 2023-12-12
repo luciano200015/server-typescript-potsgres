@@ -41,6 +41,7 @@ registerUserRoute.post('/createuser', async (req, res, next) => {
   }
 });
 
+
 registerUserRoute.put('/updateuser/:id', async (req, res, next) => {
   const { Nombre, Apellido, Correo, Telefono, Contraseña, EsAdmin, EsAnfitrion, Foto } = req.body;
   const userID = parseInt(req.params.id);
