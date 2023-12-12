@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express'; // Asegúrate de importar los tipos Request y Response adecuados de Express
+import { Request, Response, NextFunction } from 'express';
 
 function validarToken(req: Request, res: Response, next: NextFunction) {
   // Obtener el token del encabezado de la solicitud
@@ -14,10 +14,6 @@ function validarToken(req: Request, res: Response, next: NextFunction) {
     if (err) {
       return res.status(403).json({ auth: false, message: 'Token inválido o expirado' });
     }
-
-    // Puedes acceder a los datos decodificados, si es necesario, en la variable "decoded"
-    // Por ejemplo: const userId = (decoded as { userId: string }).userId;
-
     next();
   });
 }

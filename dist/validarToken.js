@@ -15,8 +15,6 @@ function validarToken(req, res, next) {
         if (err) {
             return res.status(403).json({ auth: false, message: 'Token inválido o expirado' });
         }
-        // Puedes acceder a los datos decodificados, si es necesario, en la variable "decoded"
-        // Por ejemplo: const userId = (decoded as { userId: string }).userId;
         next();
     });
 }

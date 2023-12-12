@@ -28,7 +28,6 @@ app.use(loginUsuarioRoute);
 app.use(ServiciotoRouteSinToken);
 
 
-
 //plato
 
 app.use(PlatoRoute)
