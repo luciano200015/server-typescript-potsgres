@@ -88,8 +88,10 @@ class ServicioCapaDato {
       Servicio s
   LEFT JOIN
       ServicioPlato sp ON s.ID = sp.IdServicio
-  LEFT JOIN
+      LEFT JOIN
       Plato p ON sp.IdPlato = p.ID
+    WHERE
+      p.Estado = 1
   GROUP BY
       s.ID;`);
                 return response;
@@ -143,6 +145,7 @@ class ServicioCapaDato {
           Plato p ON sp.IdPlato = p.ID
         WHERE
           TO_DATE(s.FechaFin, 'YYYY-MM-DD') >= CURRENT_DATE
+          AND p.Estado = 1
         GROUP BY
           s.ID;
       `);

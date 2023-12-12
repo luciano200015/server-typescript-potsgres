@@ -48,7 +48,7 @@ loginUsuarioRoute.post('/loginuser', (req, res) => __awaiter(void 0, void 0, voi
         });
     }
     catch (error) {
-        console.log(error);
+        //console.log(error)
         res.status(500).json({
             message: error,
             results: null,
